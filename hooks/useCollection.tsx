@@ -1,7 +1,4 @@
-import { Contract } from "ethers"
-import { useEffect, useMemo, useState } from "react"
-import getDefaultProvider from "../lib/getDefaultProvider"
-import abi from "../lib/abi/ZoraCreator1155Impl.json"
+import { useEffect, useState } from "react"
 import getNFTsForContract from "../lib/alchemy/getNFTsForContract"
 import getFormattedDrops from "../lib/getFormattedDrops"
 import useUniversalMinter from "./useUniversalMinter"
@@ -9,11 +6,6 @@ import useUniversalMinter from "./useUniversalMinter"
 const useCollection = (collectionAddress, chainId) => {
   const [drops, setDrops] = useState([])
   const { mintBatchWithoutFees } = useUniversalMinter(chainId)
-
-  const collectionContract = useMemo(
-    () => new Contract(collectionAddress, abi, getDefaultProvider(chainId)),
-    [collectionAddress, chainId],
-  )
 
   const collectAll = async () => {
     const targets = [
@@ -59,9 +51,8 @@ const useCollection = (collectionAddress, chainId) => {
       setDrops(formattedDrops)
     }
 
-    if (!collectionContract) return
     init()
-  }, [collectionContract])
+  }, [collectionAddress, chainId])
 
   return { drops, collectAll }
 }
