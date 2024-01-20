@@ -1,6 +1,4 @@
-# Welcome to HENO.
-
-[ENTER THE SYSTEM](https://mynameisheno.xyz/)
+# MINT ALL.
 
 ## Getting Started
 
