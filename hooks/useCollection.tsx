@@ -1,57 +1,46 @@
 import { useEffect, useState } from "react"
-import { utils } from "ethers"
+import { BigNumber } from "ethers"
 import { useAccount } from "wagmi"
+import { useZoraFixedPriceSaleStrategy } from "onchain-magic"
+import { zoraCreatorFixedPriceSaleStrategyAddress } from "@zoralabs/protocol-deployments"
 import getNFTsForContract from "../lib/alchemy/getNFTsForContract"
 import getFormattedDrops from "../lib/getFormattedDrops"
 import useUniversalMinter from "./useUniversalMinter"
-import abi from "../lib/abi/ZoraCreator1155Impl.json"
-import getEncodedMinterArgs from "../lib/getEncodedMinterArgs"
+import getCalldatas from "../lib/getCalldatas"
 
 const useCollection = (collectionAddress, chainId) => {
   const [drops, setDrops] = useState([])
   const { mintBatchWithoutFees } = useUniversalMinter(chainId)
   const { address } = useAccount()
+  const defaultMinter = zoraCreatorFixedPriceSaleStrategyAddress[chainId]
+  const { sale } = useZoraFixedPriceSaleStrategy(defaultMinter)
 
-  const collectAll = async (minter) => {
-    const targets = Array(drops.length).fill(collectionAddress)
-
-    // TODO: HOW TO GENERATE CALLDATA?
-    const iface = new utils.Interface(abi)
-    const quantity = 1
-    const mintReferral = address
-    const minterArguments = getEncodedMinterArgs(address, "MAGIC")
-
-    // Generate calldata for each drop
-    const calldatas = drops.map((drop, index) => {
-      const tokenId = index + 1 // Assuming tokenId starts from 1 and increments
-      return iface.encodeFunctionData("mintWithRewards", [
-        minter,
-        tokenId,
-        quantity,
-        minterArguments,
-        mintReferral,
-      ])
+  const getValues = async () => {
+    const pricesPromises = drops.map((_, index) => {
+      const tokenId = BigNumber.from(index + 1) // Convert index to BigNumber
+      return sale(collectionAddress, tokenId.toString())
     })
+    const prices = await Promise.all(pricesPromises)
+    const zoraFee = BigNumber.from("777000000000000")
+    const values = prices.map((price) => price.pricePerToken.add(zoraFee).toString())
+    return values
+  }
 
-    const values = [
-      "1554000000000000",
-      "1554000000000000",
-      "1554000000000000",
-      "1554000000000000",
-      "1554000000000000",
-      "1554000000000000",
-      "1554000000000000",
-      "1554000000000000",
-    ]
-    const value = "12432000000000000"
-    const response = await mintBatchWithoutFees(targets, calldatas, values, value)
-    console.log("SWEETS COLLECT ALL", response)
+  const collectAll = async (minter = defaultMinter) => {
+    const targets = Array(drops.length).fill(collectionAddress)
+    const calldatas = getCalldatas(drops.length, minter, address, address)
+    const values = await getValues()
+    const totalValue = values.reduce(
+      (total, value) => total.add(BigNumber.from(value)),
+      BigNumber.from(0),
+    )
+    const response = await mintBatchWithoutFees(targets, calldatas, values, totalValue)
+    return response
   }
 
   useEffect(() => {
     const init = async () => {
       const response = await getNFTsForContract(collectionAddress, chainId)
-      console.log("SWEETS getNFTsForContract", response)
       const formattedDrops = getFormattedDrops(response.nfts, chainId)
       setDrops(formattedDrops)
     }

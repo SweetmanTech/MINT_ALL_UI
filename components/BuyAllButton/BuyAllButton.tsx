@@ -1,5 +1,4 @@
 import { sepolia } from "viem/chains"
-import { zoraCreatorFixedPriceSaleStrategyAddress } from "@zoralabs/protocol-deployments"
 import useCollection from "../../hooks/useCollection"
 import Button from "../Core/Button"
 
@@ -13,8 +12,7 @@ const BuyAllButton = () => {
   console.log("SWEETS drops", drops)
 
   const handleClick = async () => {
-    const minter = zoraCreatorFixedPriceSaleStrategyAddress[sepolia.id]
-    const response = await collectAll(minter)
+    const response = await collectAll()
     console.log("SWEETS COLLECT ALL RESPONSE", response)
   }
 
