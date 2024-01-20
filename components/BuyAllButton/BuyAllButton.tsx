@@ -4,6 +4,7 @@ import Button from "../Core/Button"
 
 const BuyAllButton = () => {
   const imTiredOfBeingHypersurveilled = "0x4b130ef4051a35883e3b399b67d13b9bd4224798"
+
   const { drops, collectAll } = useCollection(imTiredOfBeingHypersurveilled, base.id)
   console.log("SWEETS drops", drops)
 
