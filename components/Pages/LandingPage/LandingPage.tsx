@@ -9,9 +9,7 @@ const LandingPage = () => {
   const isMobile = useIsMobile()
   const signer = useEthersSigner()
 
-  const handleClick = () => {
-    console.log("SWEETS HELLO WORLD")
-  }
+  const handleClick = () => {}
 
   return (
     <Layout type={isMobile ? "mobile" : "base"}>
