@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { BigNumber } from "ethers"
-import { useAccount } from "wagmi"
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi"
 import { useZoraFixedPriceSaleStrategy } from "onchain-magic"
 import { zoraCreatorFixedPriceSaleStrategyAddress } from "@zoralabs/protocol-deployments"
 import getNFTsForContract from "../lib/alchemy/getNFTsForContract"
@@ -13,8 +13,10 @@ const useCollection = (collectionAddress, chainId) => {
   const [drops, setDrops] = useState([])
   const { mintBatchWithoutFees } = useUniversalMinter(chainId)
   const { address } = useAccount()
+  const { chain } = useNetwork()
   const defaultMinter = zoraCreatorFixedPriceSaleStrategyAddress[chainId]
   const { sale } = useZoraFixedPriceSaleStrategy(defaultMinter)
+  const { switchNetwork } = useSwitchNetwork()
 
   const getValues = async () => {
     const pricesPromises = drops.map((_, index) => {
@@ -27,6 +29,10 @@ const useCollection = (collectionAddress, chainId) => {
   }
 
   const collectAll = async (minter = defaultMinter) => {
+    if (chain.id !== chainId) {
+      switchNetwork(chainId)
+      return false
+    }
     const targets = Array(drops.length).fill(collectionAddress)
     const calldatas = getCalldatas(drops.length, minter, address, address)
     const values = await getValues()
