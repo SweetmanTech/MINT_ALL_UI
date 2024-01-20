@@ -1,19 +1,14 @@
-import { sepolia } from "viem/chains"
 import useCollection from "../../hooks/useCollection"
 import Button from "../Core/Button"
+import { CHAIN_ID } from "../../lib/consts"
 
 const BuyAllButton = () => {
-  const imTiredOfBeingHypersurveilled = "0x7a9d13f9427220fd876af288e9359f8fc411febb"
-  console.log("SWEETS address")
+  const imTiredOfBeingHypersurveilled = process.env.NEXT_PUBLIC_DROP_ADDRESS
 
-  // BASE MAINNET "0x4b130ef4051a35883e3b399b67d13b9bd4224798"
-
-  const { drops, collectAll } = useCollection(imTiredOfBeingHypersurveilled, sepolia.id)
-  console.log("SWEETS drops", drops)
+  const { collectAll } = useCollection(imTiredOfBeingHypersurveilled, CHAIN_ID)
 
   const handleClick = async () => {
-    const response = await collectAll()
-    console.log("SWEETS COLLECT ALL RESPONSE", response)
+    await collectAll()
   }
 
   return (
