@@ -15,8 +15,6 @@ import { Analytics } from "@vercel/analytics/react"
 import Swiper, { Mousewheel } from "swiper"
 import { ThemeProvider } from "../providers/ThemeProvider"
 import { CHAIN, TITLE } from "../lib/consts"
-import PageLoadProvider from "../providers/PageLoadProvider"
-import PopupWidgetProvider from "../providers/PopupWidgetProvider"
 
 Swiper.use([Mousewheel])
 
@@ -45,24 +43,18 @@ function MyApp({ Component, pageProps }: AppProps) {
         modalSize="compact"
         chains={chains}
         theme={darkTheme({
-          accentColor: "#ca4342",
           accentColorForeground: "white",
           borderRadius: "large",
-          fontStack: "system",
           overlayBlur: "small",
         })}
       >
-        <PageLoadProvider>
-          <PopupWidgetProvider>
-            <ThemeProvider>
-              <SessionProvider>
-                <Component {...pageProps} />
-                <ToastContainer />
-                <Analytics />
-              </SessionProvider>
-            </ThemeProvider>
-          </PopupWidgetProvider>
-        </PageLoadProvider>
+        <ThemeProvider>
+          <SessionProvider>
+            <Component {...pageProps} />
+            <ToastContainer />
+            <Analytics />
+          </SessionProvider>
+        </ThemeProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )

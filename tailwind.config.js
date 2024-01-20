@@ -12,21 +12,20 @@ module.exports = {
   ],
   theme: {
     colors: {
-      darkgray: '#5b5959',
-      gray: '#8c8c8c',
-      gray_1: '#d2d2d2',
-      red: '#c52b2b',
+      darkgray: "#5b5959",
+      gray: "#8c8c8c",
+      gray_1: "#d2d2d2",
+      red: "#c52b2b",
       yellow: "#FFEE02",
-      black: '#000000',
-      white: "#ffffff"
+      black: "#000000",
+      white: "#ffffff",
     },
     container: {
       center: true,
     },
     extend: {
       fontFamily: {
-        dresden: ["DresdenElektronik", "sans-serif"],
-        sans: ["DresdenElektronik", ...defaultTheme.fontFamily.sans],
+        sans: [...defaultTheme.fontFamily.sans],
       },
       screens: {
         ios: "320px",
