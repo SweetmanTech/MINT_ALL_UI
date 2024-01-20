@@ -43,10 +43,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         modalSize="compact"
         chains={chains}
         theme={darkTheme({
-          accentColor: "#ca4342",
           accentColorForeground: "white",
           borderRadius: "large",
-          fontStack: "system",
           overlayBlur: "small",
         })}
       >
