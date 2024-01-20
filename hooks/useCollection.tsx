@@ -3,9 +3,9 @@ import { useEffect, useMemo, useState } from "react"
 import getDefaultProvider from "../lib/getDefaultProvider"
 import abi from "../lib/abi/ZoraCreator1155Impl.json"
 import getNFTsForContract from "../lib/alchemy/getNFTsForContract"
+import getFormattedDrops from "../lib/getFormattedDrops"
 
 const useCollection = (collectionAddress, chainId) => {
-  const [nextTokenId, setNextTokenId] = useState(null)
   const [drops, setDrops] = useState([])
 
   const collectionContract = useMemo(
@@ -20,19 +20,15 @@ const useCollection = (collectionAddress, chainId) => {
   useEffect(() => {
     const init = async () => {
       const response = await getNFTsForContract(collectionAddress, chainId)
-      console.log("SWEETS NUMBER OF TOKENS", response)
-      // GET DROP INFO
-      // FORMAT DROP INTO
-      //    drop = { contractAddress, chainId, uri, blockNumber, type, tokenId }
-      // SET TO STATE
-      //    setDrops([drop, drop,drop])
+      const formattedDrops = getFormattedDrops(response.nfts, chainId)
+      setDrops(formattedDrops)
     }
 
     if (!collectionContract) return
     init()
   }, [collectionContract])
 
-  return { collectAll }
+  return { drops, collectAll }
 }
 
 export default useCollection
