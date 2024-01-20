@@ -7,6 +7,7 @@ import getNFTsForContract from "../lib/alchemy/getNFTsForContract"
 import getFormattedDrops from "../lib/getFormattedDrops"
 import useUniversalMinter from "./useUniversalMinter"
 import getCalldatas from "../lib/getCalldatas"
+import { ZORA_FEE } from "../lib/consts"
 
 const useCollection = (collectionAddress, chainId) => {
   const [drops, setDrops] = useState([])
@@ -17,12 +18,11 @@ const useCollection = (collectionAddress, chainId) => {
 
   const getValues = async () => {
     const pricesPromises = drops.map((_, index) => {
-      const tokenId = BigNumber.from(index + 1) // Convert index to BigNumber
+      const tokenId = BigNumber.from(index + 1)
       return sale(collectionAddress, tokenId.toString())
     })
     const prices = await Promise.all(pricesPromises)
-    const zoraFee = BigNumber.from("777000000000000")
-    const values = prices.map((price) => price.pricePerToken.add(zoraFee).toString())
+    const values = prices.map((price) => price.pricePerToken.add(ZORA_FEE).toString())
     return values
   }
 
