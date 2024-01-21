@@ -13,13 +13,14 @@ import { SessionProvider } from "next-auth/react"
 import * as React from "react"
 import { Analytics } from "@vercel/analytics/react"
 import Swiper, { Mousewheel } from "swiper"
+import { base, sepolia } from "viem/chains"
 import { ThemeProvider } from "../providers/ThemeProvider"
-import { CHAIN, TITLE } from "../lib/consts"
+import { TITLE } from "../lib/consts"
 
 Swiper.use([Mousewheel])
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [CHAIN],
+  [base, sepolia],
   [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY }), publicProvider()],
 )
 
