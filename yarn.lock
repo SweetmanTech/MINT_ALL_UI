@@ -10992,11 +10992,13 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   dependencies:
     wrappy "1"
 
-onchain-magic@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/onchain-magic/-/onchain-magic-0.2.6.tgz#2b688977472687795ccab43c0a7873cd362116e4"
-  integrity sha512-j9ficyaiLDPz+ndinTM7326A5msTR5kmJRThx4fw7Qh83m+aEOwLYNabC+loMq35hSJhED4uBTSGnSrjH9Fnpg==
+onchain-magic@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/onchain-magic/-/onchain-magic-0.3.1.tgz#f4640016cc00fee10c9dde1a2d4b2722711a7562"
+  integrity sha512-THO5AGvLsiISz+ILDc2HUd1TEBC5rBDnp3hwwQwsVS2li0D2w4uh8uNZi77mD60TwUDKP1+ff+n6O4jRuEggKw==
   dependencies:
+    "@zoralabs/protocol-deployments" "^0.0.12"
+    "@zoralabs/universal-minter" "^0.2.14"
     "@zoralabs/zorb" "^0.1.0"
     ethers "^5.0.0"
     nft.storage "^7.1.1"

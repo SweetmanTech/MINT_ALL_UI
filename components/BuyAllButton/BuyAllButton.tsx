@@ -1,4 +1,4 @@
-import useCollection from "../../hooks/useCollection"
+import { useCollection } from "onchain-magic"
 import Button from "../Core/Button"
 import { CHAIN_ID } from "../../lib/consts"
 
